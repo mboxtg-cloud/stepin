@@ -121,9 +121,27 @@ st.title("Plain Agentic GTM Unified Portal")
 with st.sidebar:
     st.header("⚙️ Vendor Upload Center")
     
-    # Returning Customer Identification Array
-    customer_choice = st.selectbox("Select Customer Node (Simulation):", ["New Customer"] + list(st.session_state.customers.keys()))
-    st.session_state.current_customer = None if customer_choice == "New Customer" else customer_choice
+    st.markdown("### 👤 Customer Terminal")
+    search_name = st.text_input("Customer Log-In (Enter Nickname to verify identity):")
+    
+    if search_name:
+        if search_name in st.session_state.customers:
+            st.session_state.current_customer = search_name
+            cust_info = st.session_state.customers[search_name]
+            st.success(f"Welcome back, {search_name}! 🎉\n\n📍 Delivery: {cust_info['address']}\n⭐ Loyalty Points: {cust_info['loyalty_points']}")
+        else:
+            st.info(f"'{search_name}' is not in the system yet.")
+            new_address = st.text_input(f"Enter Area / Postcode for {search_name} to register:")
+            if st.button("Register New Customer"):
+                if new_address:
+                    st.session_state.customers[search_name] = {"address": new_address, "loyalty_points": 0}
+                    st.session_state.current_customer = search_name
+                    st.success(f"Customer profile created for {search_name}!")
+                    st.rerun()
+    else:
+        st.session_state.current_customer = None
+        st.caption("Browsing as anonymous guest profile.")
+
     
     st.markdown("---")
     
