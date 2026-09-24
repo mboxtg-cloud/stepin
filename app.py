@@ -97,7 +97,7 @@ if "current_customer" not in st.session_state:
 # ==========================================
 def run_agentic_pipeline(user_prompt):
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-3.8-flash')
         system_instruction = f"""
         You are an autonomous AI Agent managing the storefront GTM workflow for a small business.
         Available Catalog: {json.dumps(st.session_state.catalog)}
